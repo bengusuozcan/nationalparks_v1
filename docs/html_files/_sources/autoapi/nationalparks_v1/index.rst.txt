@@ -1,0 +1,23 @@
+:py:mod:`nationalparks_v1`
+==========================
+
+.. py:module:: nationalparks_v1
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   nationalparks_v1/index.rst
+
+
+Package Contents
+----------------
+
+.. py:data:: __version__
+   
+
+   
+

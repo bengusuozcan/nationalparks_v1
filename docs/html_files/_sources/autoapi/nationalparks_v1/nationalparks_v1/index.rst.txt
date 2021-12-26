@@ -1,0 +1,210 @@
+:py:mod:`nationalparks_v1.nationalparks_v1`
+===========================================
+
+.. py:module:: nationalparks_v1.nationalparks_v1
+
+.. autoapi-nested-parse::
+
+   Created on Tue Dec 14 18:24:06 2021
+   @author: Bengusu Ozcan
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   nationalparks_v1.nationalparks_v1.national_parks
+   nationalparks_v1.nationalparks_v1.name_check
+   nationalparks_v1.nationalparks_v1.parks_list
+   nationalparks_v1.nationalparks_v1.parks_names
+   nationalparks_v1.nationalparks_v1.dist_calc
+   nationalparks_v1.nationalparks_v1.how_far
+   nationalparks_v1.nationalparks_v1.park_desc
+   nationalparks_v1.nationalparks_v1.activity_list
+   nationalparks_v1.nationalparks_v1.activity_search
+   nationalparks_v1.nationalparks_v1.park_popularity
+   nationalparks_v1.nationalparks_v1.alerts
+   nationalparks_v1.nationalparks_v1.pet_friendly
+   nationalparks_v1.nationalparks_v1.pet_restrictions
+
+
+
+.. py:function:: national_parks()
+
+
+.. py:function:: name_check(name)
+
+   NAME: name_check
+   ----------
+   DESCRIPTION: Replaces and corrects users' park name query with a unique identifier in order
+   to save them searching for the exact name of the national park. Works for the top 20 national
+   parks in terms of number of visits.
+   ----------
+   PARAMETERS:
+   name: str, the name of the national park in the user query
+   -------
+   RETURNS: str, replaces user's searched national park name with the expected full name if
+   there is a match, returns user's search term if not
+
+
+.. py:function:: parks_list()
+
+   NAME:parks_list
+   ----------
+   DESCRIPTION: Matches the park name the user queried for the park code required for the API
+   search. Uses the 'parks_list.csv' file available in the data folder in the package.
+   ----------
+   PARAMETERS: None.
+   ----------
+   RETURNS: A pandas dataframe about the requested info type about national parks in a state
+
+
+.. py:function:: parks_names()
+
+   NAME: parks_names
+   ----------
+   DESCRIPTION: Returns a list of national parks for the user to search for the exact name of
+   the national park they want to query for.
+   ----------
+   PARAMETERS: None.
+   -------
+   RETURNS: A pandas dataframe of the names of the park names to use in queries
+
+
+.. py:function:: dist_calc(lat, long, n)
+
+   NAME: dist_calc
+   ----------
+   DESCRIPTION: Returns the closest n national parks based on given latitude and longitude.
+   Does not require an API key but requires user to provide the latitude and longitude of an
+   exact location
+   ----------
+   PARAMETERS:
+   lat: float, latitude of the origin location
+   long: float, longitude of the origin location
+   n: # of national parks to be listed
+   ----------
+   RETURNS: A pandas dataframe of closest parks to you and their approximate distance in Km
+
+
+.. py:function:: how_far(park_name, lat, long)
+
+   NAME: how_far
+   ----------
+   DESCRIPTION: Calculates the approximate euclidian distance (e.g. as a straight line between
+   the two locations on the map) of a national park in Km based on user's latitude and longitude.
+   ----------
+   PARAMETERS:
+   park_name: str, the name of the national park user search for
+   lat: float, latitude of the origin location
+   long: float, longitude of the origin location
+   -------
+   RETURNS: A string stating the calculated distance
+
+
+.. py:function:: park_desc(park_name, token)
+
+   NAME:park_desc
+   ----------
+   DESCRIPTION: Returns the blurb description of a national park user search for, provided by
+   the US National Parks Services to give a snapshot of what that park is like to the user.
+   ----------
+   PARAMETERS:
+   park_name: str, the name of the national park user search for
+   token: should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm
+   -------
+   RETURNS:A string as the description of the national park
+
+
+.. py:function:: activity_list()
+
+   NAME: activity_list
+   -------
+   DESCRIPTION: Returns the full list of all activities that are available to do in national
+   parks for user to choose from.
+   -------
+   PARAMETERS: None.
+   -------
+   RETURNS: A string contains the list of activities
+
+
+.. py:function:: activity_search(activity, token)
+
+   NAME: activity_search
+   -------
+   DESCRIPTION: Returns a dataframe that lists all the national parks that are suitable for the
+   activity the user searched for.
+   ----------
+   PARAMETERS:
+   activity: str, name of the activity searched
+   token: Should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm
+   -------
+   RETURNS: A pandas dataframe with the list of national parks
+
+
+.. py:function:: park_popularity(sorting, n)
+
+   NAME: park_popularity
+   -------
+   DESCRIPTION: Scrapes the most up to date number of visitors information for national parks
+   from Wikipedia and returns the n number of most and least visited national parks.
+   -------
+   PARAMTERS:
+   sorting: str, identifies the sorting order. Enter "most" or "least"
+   token: should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm
+   -------
+   RETURNS: A pandas dataframe with the name of the park and the number of visitors
+
+
+.. py:function:: alerts(park_name, token)
+
+   NAME: alerts
+   ----------
+   DESCRIPTION: Returns the active alerts existing for a park on US National Park Services along
+   with their description and the latest announcement date.
+   ----------
+   PARAMETERS:
+   info_tye: str, can only be alerts, campgrounds, amenities, places or people
+   state_code: 2 letter code of the US state queried
+   limit: # of entries to be queried. Hourly limit of this API is 1000 requests
+   api_key: should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm
+   -------
+   RETURNS: Multiple strings that contains the announcement name, category and the description of
+   the alert.
+
+
+.. py:function:: pet_friendly(park_name, token)
+
+   NAME: pet_friendly
+   ----------
+   DESCRIPTION: Informs you whether this national park is completely free of pet restrictions or guides you to another function to learn about the restrictions
+   ----------
+   PARAMETERS:
+   park_name: The national park that you would like to go
+   token: should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm
+   -------
+   RETURNS: A string that states whether there are pet restrictions or not.
+
+
+
+.. py:function:: pet_restrictions(park_name, token)
+
+   NAME:pet_restrictions
+   ----------
+   DESCRIPTION: Provides a list of pet restrictions and locations that the restrictions apply for
+   a specific national park.
+   ----------
+   PARAMETERS:
+   park_name: The national park that you would like to go
+   token: should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm
+   -------
+   RETURNS: A dataframe that contains pet restrictions and the location of the restriction
+
+
+

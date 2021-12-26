@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nationalparks_v1.nationalparks_v1 &mdash; nationalparks_v1  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mystnb.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> nationalparks_v1
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../example.html">Example usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">nationalparks_v1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>nationalparks_v1.nationalparks_v1</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for nationalparks_v1.nationalparks_v1</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Tue Dec 14 18:24:06 2021</span>
+<span class="sd">@author: Bengusu Ozcan</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">geopy.distance</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_filename</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_rows&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="national_parks"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.national_parks">[docs]</a><span class="k">def</span> <span class="nf">national_parks</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    National parks are areas that are under the protection of states or organizations with their</span>
+<span class="s2">exceptional nature or historical significance. The United States has many national parks, </span>
+<span class="s2">conserved carefully and almost always open to visitors. </span>
+<span class="s2">    This package helps you to explore national parks and plan your next national park trip.</span>
+<span class="s2">    Please note that for some of the functions below, you will need a US National Parks API key.</span>
+<span class="s2">A free API key can be acquired from: https://www.nps.gov/subjects/developer/get-started.htm</span>
+<span class="s2">    </span>
+<span class="s2">    Here are the things you can do with this package:</span>
+<span class="s2">    - dist_calc(): find the closest national park based on your coordinates</span>
+<span class="s2">    - how_far(): calculate the approximate distance of a specific park based on your coordinates.</span>
+<span class="s2">    - park_def(): read a short description of a certain national park.</span>
+<span class="s2">    - activity_search(): find parks based on an activity you would like to do.</span>
+<span class="s2">    Call activity_list() for a full list of activities you can choose from.</span>
+<span class="s2">    - park_popularity(): find the most or least visited parks based on the latest info online.</span>
+<span class="s2">    - alerts(): learn the latest alerts, closures or warnings for the park you are interested in.</span>
+<span class="s2">    - pet_friendly(): quickly check if there are pet restrictions in a certain park. If you see </span>
+<span class="s2">    that there are restrictions, call pet_restrictions() for details of pet restrictions.</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="name_check"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.name_check">[docs]</a><span class="k">def</span> <span class="nf">name_check</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME: name_check</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DESCRIPTION: Replaces and corrects users&#39; park name query with a unique identifier in order</span>
+<span class="sd">    to save them searching for the exact name of the national park. Works for the top 20 national</span>
+<span class="sd">    parks in terms of number of visits.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    PARAMETERS:</span>
+<span class="sd">    name: str, the name of the national park in the user query</span>
+<span class="sd">    -------</span>
+<span class="sd">    RETURNS: str, replaces user&#39;s searched national park name with the expected full name if </span>
+<span class="sd">    there is a match, returns user&#39;s search term if not</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;smoky&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Great Smoky Mountains National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Yellowstone National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;zion&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Zion National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;rocky&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Rocky Mountain National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;teton&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Zion National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;parshant&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Grand Canyon-Parashant National Monument&#39;</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;grand&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;canyon&#39;</span><span class="p">,</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Grand Canyon National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;cuyahoga&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Cuyahoga Valley National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;acadian&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Maine Acadian Culture&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;acadia&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Acadia National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;olympic&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Olympic National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;joshua&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Joshua Tree National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;indiana&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Indiana Dunes National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;yosemite&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Yosemite National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;shenandoah&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Shenandoah National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;bryce&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Bryce Canyon National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;hot&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;spring&#39;</span><span class="p">,</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Hot Springs National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;arches&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Arches National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;rainier&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Mount Rainier National Park&#39;</span>
+    <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;capitol&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;reef&#39;</span><span class="p">,</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span> 
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Maine Acadian Culture&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="c1">#if no keyword is matched with a popular park name, then user&#39;s query is returned</span>
+    <span class="k">return</span> <span class="n">name</span></div>
+
+<div class="viewcode-block" id="parks_list"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.parks_list">[docs]</a><span class="k">def</span> <span class="nf">parks_list</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME:parks_list</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DESCRIPTION: Matches the park name the user queried for the park code required for the API</span>
+<span class="sd">    search. Uses the &#39;parks_list.csv&#39; file available in the data folder in the package. </span>
+<span class="sd">    ----------</span>
+<span class="sd">    PARAMETERS: None.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    RETURNS: A pandas dataframe about the requested info type about national parks in a state</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parks</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/parks_list.csv&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">parks</span></div>
+
+<div class="viewcode-block" id="parks_names"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.parks_names">[docs]</a><span class="k">def</span> <span class="nf">parks_names</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME: parks_names</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DESCRIPTION: Returns a list of national parks for the user to search for the exact name of </span>
+<span class="sd">    the national park they want to query for.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    PARAMETERS: None.</span>
+<span class="sd">    -------</span>
+<span class="sd">    RETURNS: A pandas dataframe of the names of the park names to use in queries</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parks</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/parks_list.csv&#39;</span><span class="p">))</span>
+    <span class="n">parks_names</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">])</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_rows&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">parks_names</span><span class="o">=</span> <span class="n">parks_names</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;fullName&quot;</span><span class="p">:</span><span class="s2">&quot;Park Names to Search for&quot;</span><span class="p">})</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">parks_names</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">parks_names</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide_index</span><span class="p">())</span></div>
+    
+    
+<div class="viewcode-block" id="dist_calc"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.dist_calc">[docs]</a><span class="k">def</span> <span class="nf">dist_calc</span> <span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="n">long</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME: dist_calc</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DESCRIPTION: Returns the closest n national parks based on given latitude and longitude.</span>
+<span class="sd">    Does not require an API key but requires user to provide the latitude and longitude of an</span>
+<span class="sd">    exact location</span>
+<span class="sd">    ----------</span>
+<span class="sd">    PARAMETERS:</span>
+<span class="sd">    lat: float, latitude of the origin location</span>
+<span class="sd">    long: float, longitude of the origin location</span>
+<span class="sd">    n: # of national parks to be listed</span>
+<span class="sd">    ----------</span>
+<span class="sd">    RETURNS: A pandas dataframe of closest parks to you and their approximate distance in Km</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">park_dist</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Closest parks to you&quot;</span><span class="p">,</span> <span class="s2">&quot;Approximate Distance in Km&quot;</span><span class="p">])</span>
+    <span class="n">parks</span><span class="o">=</span><span class="n">parks_list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">row</span> <span class="ow">in</span> <span class="n">parks</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="c1">#iterating over each park and retrieved location</span>
+        <span class="c1">#calculating distance of each park using geopy package</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">geopy</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">distance</span><span class="p">((</span><span class="n">lat</span><span class="p">,</span><span class="n">long</span><span class="p">),</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">],</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]))</span><span class="o">.</span><span class="n">km</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;fullName&quot;</span><span class="p">],</span><span class="n">dist</span><span class="p">]],</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Closest parks to you&quot;</span><span class="p">,</span> <span class="s2">&quot;Approximate Distance in Km&quot;</span><span class="p">])</span>
+        <span class="n">park_dist</span><span class="o">=</span><span class="n">park_dist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="c1">#among all distances calculated, selecting top or bottom n result</span>
+    <span class="k">return</span> <span class="n">park_dist</span><span class="o">.</span><span class="n">nsmallest</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="s2">&quot;Approximate Distance in Km&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="how_far"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.how_far">[docs]</a><span class="k">def</span> <span class="nf">how_far</span><span class="p">(</span><span class="n">park_name</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">long</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME: how_far</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DESCRIPTION: Calculates the approximate euclidian distance (e.g. as a straight line between</span>
+<span class="sd">    the two locations on the map) of a national park in Km based on user&#39;s latitude and longitude.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    PARAMETERS:</span>
+<span class="sd">    park_name: str, the name of the national park user search for</span>
+<span class="sd">    lat: float, latitude of the origin location</span>
+<span class="sd">    long: float, longitude of the origin location</span>
+<span class="sd">    -------</span>
+<span class="sd">    RETURNS: A string stating the calculated distance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">park_name</span><span class="o">=</span><span class="n">name_check</span><span class="p">(</span><span class="n">park_name</span><span class="p">)</span>
+    <span class="n">parks</span><span class="o">=</span><span class="n">parks_list</span><span class="p">()</span>
+    <span class="c1">#if the park name user entered doesn&#39;t exist in the database, user is asked to check a name list</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">parks</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">park_name</span><span class="p">])</span><span class="o">.</span><span class="n">empty</span><span class="o">==</span><span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">park_name</span><span class="si">}</span><span class="s2"> is not a valid park name to serach for. Please call parks_names() to see an alphabetic list of the parks you can search for.&quot;</span>
+    <span class="n">lat_park</span><span class="o">=</span><span class="n">parks</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">park_name</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">long_park</span><span class="o">=</span><span class="n">parks</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">park_name</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="c1">#locating the specific park user looked for </span>
+    <span class="c1">#calculating the distance from the given location to the specific park</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">geopy</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">distance</span><span class="p">((</span><span class="n">lat</span><span class="p">,</span><span class="n">long</span><span class="p">),</span> <span class="p">(</span><span class="n">lat_park</span><span class="p">,</span><span class="n">long_park</span><span class="p">))</span><span class="o">.</span><span class="n">km</span>
+    <span class="n">result</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;The distance between your loaction and &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">park_name</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; is approximately &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; km&quot;</span><span class="p">)</span>  
+    <span class="k">return</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="park_desc"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.park_desc">[docs]</a><span class="k">def</span> <span class="nf">park_desc</span><span class="p">(</span><span class="n">park_name</span><span class="p">,</span><span class="n">token</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME:park_desc</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DESCRIPTION: Returns the blurb description of a national park user search for, provided by </span>
+<span class="sd">    the US National Parks Services to give a snapshot of what that park is like to the user.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    PARAMETERS:</span>
+<span class="sd">    park_name: str, the name of the national park user search for</span>
+<span class="sd">    token: should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm</span>
+<span class="sd">    -------</span>
+<span class="sd">    RETURNS:A string as the description of the national park</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">park_name</span><span class="o">=</span><span class="n">name_check</span><span class="p">(</span><span class="n">park_name</span><span class="p">)</span>
+    <span class="n">parks</span><span class="o">=</span><span class="n">parks_list</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">parks</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">park_name</span><span class="p">])</span><span class="o">.</span><span class="n">empty</span><span class="o">==</span><span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">park_name</span><span class="si">}</span><span class="s2"> is not a valid park name to serach for. Please call parks_names() to see an alphabetic list of the parks you can search for.&quot;</span>
+    <span class="n">code</span><span class="o">=</span><span class="n">parks</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">park_name</span><span class="p">,</span> <span class="s1">&#39;parkCode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="c1">#API code works on park code. retreiving the park code from the park name user entered</span>
+    <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://developer.nps.gov/api/v1/parks?parkCode=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&amp;api_key=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">park</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">park</span><span class="o">.</span><span class="n">status_code</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Your API code is not working as expected. Please make sure you acquired one correctly.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">park</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="c1">#retreiving the data field and then specific column of json output of API query</span>
+        <span class="n">park_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">park</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+        <span class="n">definition_df</span><span class="o">=</span><span class="n">park_df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">definition_df</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;You either reached your query limit or there is an unidentified problem with this server right now. Please try again later.&quot;</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="activity_list"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.activity_list">[docs]</a><span class="k">def</span> <span class="nf">activity_list</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME: activity_list</span>
+<span class="sd">    -------</span>
+<span class="sd">    DESCRIPTION: Returns the full list of all activities that are available to do in national </span>
+<span class="sd">    parks for user to choose from.</span>
+<span class="sd">    -------</span>
+<span class="sd">    PARAMETERS: None.</span>
+<span class="sd">    -------</span>
+<span class="sd">    RETURNS: A string contains the list of activities</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">events</span><span class="o">=</span><span class="s2">&quot;Here are the activities you can search for: &quot;</span>
+    <span class="n">act_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/activities.csv&#39;</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">row</span> <span class="ow">in</span> <span class="n">act_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="c1">#retreiving all the activities from the activities list already pulled by API</span>
+        <span class="c1">#preparing a shorter list by printing each item on the dataframe</span>
+        <span class="n">events</span><span class="o">=</span><span class="n">events</span><span class="o">+</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;, &quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">events</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span></div>
+    
+<div class="viewcode-block" id="activity_search"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.activity_search">[docs]</a><span class="k">def</span> <span class="nf">activity_search</span><span class="p">(</span><span class="n">activity</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME: activity_search</span>
+<span class="sd">    -------</span>
+<span class="sd">    DESCRIPTION: Returns a dataframe that lists all the national parks that are suitable for the </span>
+<span class="sd">    activity the user searched for.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    PARAMETERS:</span>
+<span class="sd">    activity: str, name of the activity searched</span>
+<span class="sd">    token: Should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm</span>
+<span class="sd">    -------</span>
+<span class="sd">    RETURNS: A pandas dataframe with the list of national parks</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">act_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/activities.csv&#39;</span><span class="p">))</span>
+    <span class="n">act_df</span><span class="o">=</span><span class="n">act_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">act_df</span><span class="p">[</span><span class="n">act_df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">activity</span><span class="p">])</span><span class="o">.</span><span class="n">empty</span><span class="o">==</span><span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">activity</span><span class="si">}</span><span class="s2"> is not a valid activity name to serach for. Please call activity_list() to see a list of activities you can search for.&quot;</span>
+    <span class="n">code</span><span class="o">=</span><span class="n">act_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">act_df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">activity</span><span class="p">,</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="c1">#getting park code from the park name entered to use in the API query</span>
+    <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://developer.nps.gov/api/v1/activities/parks?q=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&amp;api_key=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">park_activities</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">park_activities</span><span class="o">.</span><span class="n">status_code</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Your API code is not working as expected. Please make sure you acquired one correctly.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">park_activities</span><span class="o">.</span><span class="n">status_code</span><span class="o">==</span><span class="mi">200</span><span class="p">:</span>
+        <span class="n">pactivities_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">park_activities</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+        <span class="n">alist</span><span class="o">=</span><span class="n">pactivities_df</span><span class="p">[</span><span class="s1">&#39;parks&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">alist</span><span class="p">:</span>
+            <span class="n">temp_df</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">temp_df</span><span class="o">=</span> <span class="n">temp_df</span><span class="p">[[</span><span class="s2">&quot;states&quot;</span><span class="p">,</span><span class="s2">&quot;fullName&quot;</span><span class="p">]]</span>
+            <span class="n">temp_df</span><span class="o">=</span> <span class="n">temp_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;states&quot;</span><span class="p">:</span><span class="s2">&quot;State&quot;</span><span class="p">,</span><span class="s2">&quot;fullName&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Parks you can do </span><span class="si">{</span><span class="n">activity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+            <span class="k">return</span><span class="p">(</span><span class="n">temp_df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide_index</span><span class="p">())</span>
+        <span class="c1">#given that the returned json result contains list of dictionaries, the park name is </span>
+        <span class="c1">#retreived by multiple iterations over the json field and only two fileds are returned</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;You either reached your query limit or there is an unidentified problem with this server right now. Please try again later.&quot;</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="park_popularity"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.park_popularity">[docs]</a><span class="k">def</span> <span class="nf">park_popularity</span><span class="p">(</span><span class="n">sorting</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME: park_popularity</span>
+<span class="sd">    -------</span>
+<span class="sd">    DESCRIPTION: Scrapes the most up to date number of visitors information for national parks </span>
+<span class="sd">    from Wikipedia and returns the n number of most and least visited national parks.</span>
+<span class="sd">    -------</span>
+<span class="sd">    PARAMTERS:</span>
+<span class="sd">    sorting: str, identifies the sorting order. Enter &quot;most&quot; or &quot;least&quot;</span>
+<span class="sd">    token: should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm</span>
+<span class="sd">    -------</span>
+<span class="sd">    RETURNS: A pandas dataframe with the name of the park and the number of visitors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">wiki</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="s1">&#39;https://en.wikipedia.org/wiki/List_of_national_parks_of_the_United_States&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">wiki_names</span> <span class="o">=</span> <span class="n">wiki</span><span class="p">[[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">wiki</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s1">&#39;Name&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]]</span>
+    <span class="n">wiki_num</span><span class="o">=</span><span class="n">wiki</span><span class="p">[[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">wiki</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s1">&#39;visitor&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]]</span>
+    <span class="c1">#scraping latest visitor information per national park from Wikipedia</span>
+    <span class="n">wikifinal</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">wiki_names</span><span class="p">,</span> <span class="n">wiki_num</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">wikifinal</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="nb">list</span><span class="p">(</span><span class="n">wikifinal</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span> <span class="s1">&#39;Name of the Park&#39;</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">wikifinal</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="nb">list</span><span class="p">(</span><span class="n">wikifinal</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span> <span class="s1">&#39;Number of Visitors&#39;</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">wikifinal</span><span class="p">[</span><span class="s1">&#39;Name of the Park&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wikifinal</span><span class="p">[</span><span class="s1">&#39;Name of the Park&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">wikifinal</span><span class="p">[</span><span class="s2">&quot;Number of Visitors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">wikifinal</span><span class="p">[</span><span class="s2">&quot;Number of Visitors&quot;</span><span class="p">])</span>
+    <span class="c1">#formatting the wikipedia table by getting rid of * and selecting and renaming only necessary column</span>
+    <span class="k">if</span> <span class="n">sorting</span> <span class="o">==</span> <span class="s2">&quot;most&quot;</span><span class="p">:</span>
+        <span class="n">disp</span><span class="o">=</span> <span class="n">wikifinal</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="s2">&quot;Number of Visitors&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">sorting</span> <span class="o">==</span><span class="s2">&quot;least&quot;</span><span class="p">:</span>
+        <span class="n">disp</span><span class="o">=</span> <span class="n">wikifinal</span><span class="o">.</span><span class="n">nsmallest</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="s2">&quot;Number of Visitors&quot;</span><span class="p">)</span>
+        <span class="c1">#returning highest or lowest number of visitors per park</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Please use &#39;most&#39; or &#39;least&#39; as you search order&quot;</span><span class="p">)</span>
+    <span class="n">disp</span><span class="p">[</span><span class="s1">&#39;Number of Visitors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">disp</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;Number of Visitors&#39;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1">#formatting the visitor number by commas for aesthetics purposes</span>
+    <span class="k">return</span> <span class="n">disp</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide_index</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="alerts"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.alerts">[docs]</a><span class="k">def</span> <span class="nf">alerts</span><span class="p">(</span><span class="n">park_name</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME: alerts</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DESCRIPTION: Returns the active alerts existing for a park on US National Park Services along</span>
+<span class="sd">    with their description and the latest announcement date.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    PARAMETERS:</span>
+<span class="sd">    info_tye: str, can only be alerts, campgrounds, amenities, places or people</span>
+<span class="sd">    state_code: 2 letter code of the US state queried</span>
+<span class="sd">    limit: # of entries to be queried. Hourly limit of this API is 1000 requests</span>
+<span class="sd">    api_key: should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm</span>
+<span class="sd">    -------</span>
+<span class="sd">    RETURNS: Multiple strings that contains the announcement name, category and the description of</span>
+<span class="sd">    the alert.</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+    <span class="n">park_name</span><span class="o">=</span><span class="n">name_check</span><span class="p">(</span><span class="n">park_name</span><span class="p">)</span>
+    <span class="n">parks</span><span class="o">=</span><span class="n">parks_list</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">parks</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">park_name</span><span class="p">])</span><span class="o">.</span><span class="n">empty</span><span class="o">==</span><span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">park_name</span><span class="si">}</span><span class="s2"> is not a valid park name to serach for. Please call parks_names() to see an alphabetic list of the parks you can search for.&quot;</span>
+    <span class="n">code</span><span class="o">=</span><span class="n">parks</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">park_name</span><span class="p">,</span> <span class="s1">&#39;parkCode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="c1">#getting park code from the park name entered to use in the API query</span>
+    <span class="n">api_url</span> <span class="o">=</span> <span class="s2">&quot;https://developer.nps.gov/api/v1/alerts?parkCode=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;&amp;api_key=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">api_url</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Your API code is not working as expected. Please make sure you acquired one correctly.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Here are the active alerts for this park:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;data&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> announced on </span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;lastIndexedDate&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Description: </span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;If you want to learn more about this alert, visit </span><span class="si">{</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1">#selecting multiple fields and preparing a paragraph using f strings with only the necessary</span>
+            <span class="c1">#information from a bigger alerts table</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;You either reached your query limit or there is an unidentified problem with this server right now. Please try again later.&quot;</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="pet_friendly"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.pet_friendly">[docs]</a><span class="k">def</span> <span class="nf">pet_friendly</span><span class="p">(</span><span class="n">park_name</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME: pet_friendly</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DESCRIPTION: Informs you whether this national park is completely free of pet restrictions or guides you to another function to learn about the restrictions</span>
+<span class="sd">    ----------</span>
+<span class="sd">    PARAMETERS:</span>
+<span class="sd">    park_name: The national park that you would like to go</span>
+<span class="sd">    token: should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm</span>
+<span class="sd">    -------</span>
+<span class="sd">    RETURNS: A string that states whether there are pet restrictions or not.</span>
+<span class="sd">     &quot;&quot;&quot;</span>
+    <span class="n">park_name</span><span class="o">=</span><span class="n">name_check</span><span class="p">(</span><span class="n">park_name</span><span class="p">)</span>
+    <span class="n">parks</span><span class="o">=</span><span class="n">parks_list</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">parks</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">park_name</span><span class="p">])</span><span class="o">.</span><span class="n">empty</span><span class="o">==</span><span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">park_name</span><span class="si">}</span><span class="s2"> is not a valid park name to serach for. Please call parks_names() to see an alphabetic list of the parks you can search for.&quot;</span>
+    <span class="n">code</span><span class="o">=</span><span class="n">parks</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">park_name</span><span class="p">,</span> <span class="s1">&#39;parkCode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="c1">#getting park code from the park name entered to use in the API query</span>
+    <span class="n">api_code</span><span class="o">=</span><span class="s1">&#39;https://developer.nps.gov/api/v1/thingstodo?parkCode=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&amp;api_key=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">api_code</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;4&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Your API code is not working as expected. Please make sure you acquired one correctly.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="o">==</span><span class="mi">200</span><span class="p">:</span>
+        <span class="n">pets_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+        <span class="c1">#since there is no single &quot;pet friendliness&quot; identifier, selecting multiple columns that</span>
+        <span class="c1">#may list a pet restriction and building a condition that if any of them has &quot;true&quot; value</span>
+        <span class="c1">#which indicates a restriction, warning the user that there are pet restrictions in the park</span>
+        <span class="k">if</span> <span class="n">pets_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;There are no pet restrictions in this park. You are good to go!&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">((</span><span class="n">pets_df</span><span class="p">[</span><span class="n">pets_df</span><span class="p">[</span><span class="s1">&#39;arePetsPermittedWithRestrictions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">)])</span><span class="o">.</span><span class="n">empty</span> <span class="ow">or</span> <span class="p">(</span><span class="n">pets_df</span><span class="p">[</span><span class="n">pets_df</span><span class="p">[</span><span class="s1">&#39;arePetsPermitted&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">)])</span><span class="o">.</span><span class="n">empty</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;Pets are permitted in this park with certain restrictions. Please call pet_restrictions function to see what they are.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;There are no pet restrictions in this park. You are good to go!&quot;</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="pet_restrictions"><a class="viewcode-back" href="../../autoapi/nationalparks_v1/nationalparks_v1/index.html#nationalparks_v1.nationalparks_v1.pet_restrictions">[docs]</a><span class="k">def</span> <span class="nf">pet_restrictions</span><span class="p">(</span><span class="n">park_name</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NAME:pet_restrictions</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DESCRIPTION: Provides a list of pet restrictions and locations that the restrictions apply for</span>
+<span class="sd">    a specific national park.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    PARAMETERS:</span>
+<span class="sd">    park_name: The national park that you would like to go</span>
+<span class="sd">    token: should be acquired through this link: https://www.nps.gov/subjects/developer/get-started.htm</span>
+<span class="sd">    -------</span>
+<span class="sd">    RETURNS: A dataframe that contains pet restrictions and the location of the restriction</span>
+<span class="sd">     &quot;&quot;&quot;</span>
+    <span class="n">park_name</span><span class="o">=</span><span class="n">name_check</span><span class="p">(</span><span class="n">park_name</span><span class="p">)</span>
+    <span class="n">parks</span><span class="o">=</span><span class="n">parks_list</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">parks</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">park_name</span><span class="p">])</span><span class="o">.</span><span class="n">empty</span><span class="o">==</span><span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">park_name</span><span class="si">}</span><span class="s2"> is not a valid park name to serach for. Please call parks_names() to see an alphabetic list of the parks you can search for.&quot;</span>
+    <span class="n">code</span><span class="o">=</span><span class="n">parks</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">parks</span><span class="p">[</span><span class="s1">&#39;fullName&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">park_name</span><span class="p">,</span> <span class="s1">&#39;parkCode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="c1">#getting park code from the park name entered to use in the API query</span>
+    <span class="n">api_code</span><span class="o">=</span><span class="s1">&#39;https://developer.nps.gov/api/v1/thingstodo?parkCode=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&amp;api_key=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">api_code</span><span class="p">))</span>
+    <span class="n">pets_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">pets_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;There are no pet restrictions in this park. You are good to go!&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1">#pulling pet restrictions based on a given park name</span>
+        <span class="c1">#selecting only the necessary columns of location and restriction description</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pets_df</span><span class="p">[[</span><span class="s1">&#39;location&#39;</span><span class="p">,</span><span class="s1">&#39;petsDescription&#39;</span><span class="p">]])</span>
+        <span class="n">table</span><span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;location&quot;</span><span class="p">:</span><span class="s2">&quot;Restriction Location&quot;</span><span class="p">,</span><span class="s2">&quot;petsDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;Description&quot;</span><span class="p">})</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">hide_index</span><span class="p">())</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Bengusu Ozcan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
