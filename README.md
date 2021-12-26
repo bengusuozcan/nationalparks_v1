@@ -28,6 +28,8 @@ Install from pypi via the following command:
 Make sure that you import the package via the following command:
 import nationalparks_v1 from nationalparks_v1
 
+Try running help(nationalparks_v1) to see how to start using this package.
+
 Dependencies: This package leverages poetry to install the dependencies which are as follows:
 
 pytest = "^6.2.5"
