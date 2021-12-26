@@ -1,16 +1,3 @@
-**Disclaimer for the grader:**
-
--This part is just to add disclaimers for the sake of this project and not added in the published version of the packge.
-
--As confirmed with on of our TAs that it satisfies the requirements, I only used the ReadMe for the explanation of my package rather than a separate vignette file.
-
--My tests run successfully as in the below screenshot but I updated the test functions hiding my API key in the submitted version, so they would not run as they are now.
-
-<img width="461" alt="my tests works" src="https://user-images.githubusercontent.com/27307541/146476306-5074d983-edc4-4769-bd36-6679ee9aec92.PNG">
-
-Author: Bengusu Ozcan (bo2297)
-Type of Project: A
-
 # Package name: nationalparks_v1
 
 National parks are areas that are under the protection of states or organizations with their exceptional nature or historical significance. The United States has many national parks, conserved carefully and almost always open to visitors. 
