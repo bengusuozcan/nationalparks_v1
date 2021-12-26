@@ -24,6 +24,7 @@ This package depends on 2 data files that are complied through US National Parks
 ## Installation
 Install from pypi via the following command:
 !pip install nationalparks_v1
+For reference: https://pypi.org/project/nationalparks-v1/
 
 Make sure that you import the package via the following command:
 import nationalparks_v1 from nationalparks_v1
