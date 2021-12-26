@@ -22,9 +22,11 @@ This package depends on 2 data files that are complied through US National Parks
 2) activities: CSV file that only 2 columns are needed for the package: 
 
 ## Installation
+Install from pypi via the following command:
+!pip install nationalparks_v1
 
-This package is currently released only on testpy.pi. Please use following command to install:
-!pip install -i https://test.pypi.org/pypi/ --extra-index-url https://pypi.org/simple nationalparks_v1
+Make sure that you import the package via the following command:
+import nationalparks_v1 from nationalparks_v1
 
 Dependencies: This package leverages poetry to install the dependencies which are as follows:
 
